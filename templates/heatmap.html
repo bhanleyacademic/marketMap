@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    <svg id="constellation" width="800" height="600" style="background: black;" data-name="Layer 0">
+  <!-- Existing paths and circles -->
+  <path d="M75.7,96.361H24.3a9.733,9.733,0,0,1-8.736-14.022L33.323,46.158a42.892,42.892,0,0,0,4.366-18.8V16.646a1,1,0,0,1,2,0V27.355a44.915,44.915,0,0,1-4.571,19.684L17.355,83.22A7.733,7.733,0,0,0,24.3,94.361H75.7A7.733,7.733,0,0,0,82.645,83.22L64.882,47.039a44.915,44.915,0,0,1-4.571-19.684V16.646a1,1,0,1,1,2,0V27.355a42.892,42.892,0,0,0,4.366,18.8L84.439,82.339A9.733,9.733,0,0,1,75.7,96.361Z"
+    fill="none" stroke="white" />
+</svg>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+
+    <div id="vis"></div>
+    <script>
+        vegaEmbed("#vis", {{ chart_json | safe }}).catch(console.error);
+    </script>
+<script>
+  const svg = d3.select("#constellation");
+  const path = svg.select("path").node(); // Select the first path
+  const totalLength = path.getTotalLength(); // Get total path length
+  const starShape = "M 0,-10 L 3,-3 L 10,0 L 3,3 L 0,10 L -3,3 L -10,0 L -3,-3 Z"; // 4-point star
+
+  // Number of stars (dynamic, e.g., fetched from Flask)
+  const numStars = ({{ num_profitable_recipes }}/{{ max_value }})*100; // Example count, can be dynamically updated
+  const scale = 7; // Scaling factor
+  const translate = { x: -5, y: -12 }; // Translation offsets
+
+  // Use a log scale to distribute the stars
+  const logScale = d3.scaleLog()
+    .domain([1, numStars]) // Input range: number of stars
+    .range([0, totalLength]); // Output range: path length
+
+  const starPositions = []; // Array to store star positions
+
+  // Calculate log-distributed points along the path
+  for (let i = 1; i <= numStars; i++) {
+    const pathPosition = logScale(i); // Get position along the path
+    const point = path.getPointAtLength(pathPosition);
+    const scaledPoint = {
+      x: point.x * scale + translate.x * scale,
+      y: point.y * scale + translate.y * scale,
+    };
+    starPositions.push(scaledPoint);
+  }
+
+  // Add stars
+  const starsGroup = svg
+    .append("g")
+    .attr("id", "stars");
+
+  starsGroup
+    .selectAll("circle")
+    .data(starPositions)
+    .enter()
+    .append("path")
+    .attr("d", starShape)
+    .attr("transform", d => `translate(${d.x},${d.y}) scale(0.5)`)
+    .attr("fill", "white");
+
+  // Add twinkling to a random subset of stars
+  const animatedStars = 10; // Limit animated stars
+  const animatedStarIndices = Array.from(
+    { length: animatedStars },
+    () => Math.floor(Math.random() * starPositions.length)
+  );
+
+function twinkleSubset() {
+  starsGroup
+    .selectAll("path")
+    .filter((_, i) => animatedStarIndices.includes(i)) // Animate only the subset
+    .transition()
+    .duration(500)
+    .attr("transform", d => `translate(${d.x},${d.y}) scale(${0.5 + Math.random() * 0.5})`)
+    .attr("opacity", () => 0.5 + Math.random() * 0.5)
+    .ease(d3.easeSinInOut)
+    .on("end", twinkleSubset);
+}
+
+  twinkleSubset();
+</script>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div id="vis"></div>
+    <script>
+        vegaEmbed("#vis", {{ chart_json | safe }}).catch(console.error);
+    </script>
+{% endblock %}

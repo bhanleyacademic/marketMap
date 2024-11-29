@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <!--favicon-->
+    <link rel="icon" href="static/images/favicon-32x32.png" type="image/png">
+    <!-- loader-->
+    <link href="static/css/pace.min.css" rel="stylesheet">
+    <script src="static/js/pace.min.js"></script>
+
+    <!--plugins-->
+    <link href="static/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/plugins/metismenu/metisMenu.min.css">
+    <link rel="stylesheet" type="text/css" href="static/plugins/metismenu/mm-vertical.css">
+    <link rel="stylesheet" type="text/css" href="static/plugins/simplebar/css/simplebar.css">
+    <!--bootstrap css-->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
+    <!--main css-->
+    <link href="static/css/bootstrap-extended.css" rel="stylesheet">
+    <link href="static/sass/main.css" rel="stylesheet">
+    <link href="static/sass/dark-theme.css" rel="stylesheet">
+    <link href="static/sass/blue-theme.css" rel="stylesheet">
+    <link href="static/sass/semi-dark.css" rel="stylesheet">
+    <link href="static/sass/bordered-theme.css" rel="stylesheet">
+    <link href="static/sass/responsive.css" rel="stylesheet">
+</head>
+<body>
+    <aside class="sidebar-wrapper" data-simplebar="true">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <img src="static/images/logo-icon.png" class="logo-img" alt="">
+        </div>
+        <div class="logo-name flex-grow-1">
+          <h5 class="mb-0">Profession Heatmap</h5>
+        </div>
+        <div class="sidebar-close">
+          <span class="material-icons-outlined">close</span>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+          <!--navigation-->
+          <ul class="metismenu" id="sidenav">
+              {% for st, safe_name in skill_tier_links %}
+                <li>
+                    <a href="/heatmap_{{ safe_name }}">{{ st }}</a>
+                </li>
+              {% endfor %}
+           </ul>
+          <!--end navigation-->
+      </div>
+    </aside>
+    <nav>
+        <a href="/">Home</a>
+
+
+
+    </nav>
+<main class="main-wrapper">
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+  <!--start footer-->
+  <footer class="page-footer">
+    <p class="mb-0">Copyright © 2024. All right reserved.</p>
+  </footer>
+  <!--end footer-->
+  <!--bootstrap js-->
+  <script src="static/js/bootstrap.bundle.min.js"></script>
+
+  <!--plugins-->
+  <script src="static/js/jquery.min.js"></script>
+  <!--plugins-->
+  <script src="static/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+  <script src="static/plugins/metismenu/metisMenu.min.js"></script>
+  <script src="static/plugins/apexchart/apexcharts.min.js"></script>
+  <script src="static/plugins/simplebar/js/simplebar.min.js"></script>
+  <script src="static/plugins/peity/jquery.peity.min.js"></script>
+  <script>
+    $(".data-attributes span").peity("donut")
+  </script>
+  <script src="static/js/dashboard2.js"></script>
+  <script src="static/js/main.js"></script>
+</body>
+</html>

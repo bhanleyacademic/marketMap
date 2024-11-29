@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Welcome to the Heatmap Viewer</h1>
+    <p>Select a heatmap from the navigation above.</p>
+    <!--<button id="run-script-btn">Run Script</button>
+    <pre id="script-output"></pre>
+    <script>
+document.getElementById('run-script-btn').addEventListener('click', function() {
+    fetch('/', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.output) {
+            document.getElementById('script-output').textContent = data.output;
+        } else if (data.error) {
+            document.getElementById('script-output').textContent = 'Error: ' + data.error;
+        }
+    })
+    .catch(error => {
+        document.getElementById('script-output').textContent = 'Error: ' + error;
+    });
+});
+</script>-->
+{% endblock %}
